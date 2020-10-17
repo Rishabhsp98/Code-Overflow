@@ -1,0 +1,46 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int KnapSack_DP(vector<int> &Pro, vector<int> &wt, int n, int m)
+{
+    int ans[n + 1][m + 1];
+    for (int i = 0; i <= n; i++)
+    {
+        for (int w = 0; w <= m; w++)
+        {
+            if (i == 0 || w == 0)
+            {
+                ans[i][w] = 0;
+            }
+            else if (wt[i] <= w)
+            {
+                ans[i][w] = max(Pro[i] + ans[i - 1][w - wt[i]], ans[i - 1][w]);
+            }
+            else
+                ans[i][w] = ans[i - 1][w];
+        }
+    }
+    return ans[n][m];
+}
+int main()
+{
+    int n, m, i, input, max_PRO;
+    cin >> n >> m;
+    vector<int> Pro(n);
+    vector<int> W(n);
+    for (i = 0; i < n; i++)
+    {
+        cin >> W[i];
+    }
+    for (i = 0; i < n; i++)
+    {
+        cin >> Pro[i];
+    }
+    W.insert(W.begin(), 0);
+    Pro.insert(Pro.begin(), 0);
+    max_PRO = KnapSack_DP(Pro, W, n, m);
+    cout << "\nMAXIMUM PROFIT from above mentioned weights is " << max_PRO;
+    return 0;
+}
